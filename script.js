@@ -172,23 +172,33 @@ function answer(selection) {
     let idOfRightAnswer = `answer_${question['right_answer']}`;
 
     if (rightAnswerSelected(selectedQuestionNumber)) {
-        document.getElementById(selection).parentNode.classList.add('bg-success');
-        document.getElementById(selection).previousElementSibling.classList.add('bg-success');
-        document.getElementById(selection).previousElementSibling.classList.add('color-white');
+        addClasslistForRightAnswer();
         resetAudio();
         AUDIO_SUCCESS.play();
         rightQuestions++;
     } else {
-        document.getElementById(selection).parentNode.classList.add('bg-danger');
-        document.getElementById(selection).previousElementSibling.classList.add('bg-danger');
-        document.getElementById(selection).previousElementSibling.classList.add('color-white');
-        document.getElementById(idOfRightAnswer).parentNode.classList.add('bg-success');
-        document.getElementById(idOfRightAnswer).previousElementSibling.classList.add('bg-success');
-        document.getElementById(idOfRightAnswer).previousElementSibling.classList.add('color-white');
+        addClasslistForWrongAnswer();
         resetAudio();
         AUDIO_FAIL.play();
     }
     document.getElementById('next-button').disabled = false;
+}
+
+
+function addClasslistForRightAnswer() {
+    document.getElementById(selection).parentNode.classList.add('bg-success');
+    document.getElementById(selection).previousElementSibling.classList.add('bg-success');
+    document.getElementById(selection).previousElementSibling.classList.add('color-white');
+}
+
+
+function addClasslistForWrongAnswer() {
+    document.getElementById(selection).parentNode.classList.add('bg-danger');
+    document.getElementById(selection).previousElementSibling.classList.add('bg-danger');
+    document.getElementById(selection).previousElementSibling.classList.add('color-white');
+    document.getElementById(idOfRightAnswer).parentNode.classList.add('bg-success');
+    document.getElementById(idOfRightAnswer).previousElementSibling.classList.add('bg-success');
+    document.getElementById(idOfRightAnswer).previousElementSibling.classList.add('color-white');
 }
 
 
