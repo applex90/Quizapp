@@ -1,92 +1,199 @@
 let questions = [
     {
-        "question": "Wie heißt die Hauptstadt von Schweden?",
-        "answer_1": "Oslo",
-        "answer_2": "Stockholm",
-        "answer_3": "Kopenhagen",
-        "answer_4": "Reykjavík",
-        "right_answer": 2
+        "question": "What does HTML stand for?",
+        "answer_1": "Hyper Text Markup Language",
+        "answer_2": "Hyperlinks and Text Markup Language",
+        "answer_3": "Home Tool Markup Language",
+        "answer_4": "Hyper Text Math Language",
+        "right_answer": 1,
+        "category": "HTML"
     },
     {
-        "question": "Welche ist die Hauptstadt Australiens?",
-        "answer_1": "Canberra",
-        "answer_2": "Sydney",
-        "answer_3": "Melbourne",
-        "answer_4": "Perth",
-        "right_answer": 1
+        "question": "Which HTML attribute specifies an alternate text for an image, if the image cannot be displayed?",
+        "answer_1": "alt",
+        "answer_2": "src",
+        "answer_3": "longdesc",
+        "answer_4": "title",
+        "right_answer": 1,
+        "category": "HTML"
     },
     {
-        "question": "Was heißt BRD",
-        "answer_1": "Brot",
-        "answer_2": "Bundesrepublikdeutschland",
-        "answer_3": "Melbourne",
-        "answer_4": "Perth",
-        "right_answer": 2
+        "question": "Who is making the Web standards?",
+        "answer_1": "Mozilla",
+        "answer_2": "Google",
+        "answer_3": "Microsoft",
+        "answer_4": "The World Wide Web Consortium",
+        "right_answer": 4,
+        "category": "HTML"
+    },
+    {
+        "question": "What is the correct HTML element for inserting a line break?",
+        "answer_1": "&lt;break&gt;",
+        "answer_2": "&lt;br&gt;",
+        "answer_3": "&lt;lb&gt;",
+        "answer_4": "&lt;b&gt;",
+        "right_answer": 2,
+        "category": "HTML"
+    },
+    {
+        "question": "What does CSS stand for?",
+        "answer_1": "Cascading Style Sheets",
+        "answer_2": "Colorful Style Sheets",
+        "answer_3": "Creative Style Sheets",
+        "answer_4": "Computer Style Sheets",
+        "right_answer": 1,
+        "category": "CSS"
+    },
+    {
+        "question": "Which is the correct CSS syntax?",
+        "answer_1": "body:color=black;",
+        "answer_2": "{body:color=black;}",
+        "answer_3": "{body;color:black;}",
+        "answer_4": "body {color: black;}",
+        "right_answer": 4,
+        "category": "CSS"
+    },
+    {
+        "question": "Which property is used to change the background color?",
+        "answer_1": "bgcolor",
+        "answer_2": "background-color",
+        "answer_3": "color",
+        "answer_4": "background-size",
+        "right_answer": 2,
+        "category": "CSS"
+    },
+    {
+        "question": "How do you write 'Hello World' in an alert box?",
+        "answer_1": "alert('Hello World');",
+        "answer_2": "msgBox('Hello World');",
+        "answer_3": "msg('Hello World');",
+        "answer_4": "alertBox('Hello World');",
+        "right_answer": 1,
+        "category": "JS"
+    },
+    {
+        "question": "How do you call a function named 'myFunction'?",
+        "answer_1": "myFunction()",
+        "answer_2": "call function myFunction()",
+        "answer_3": "call myFunction()",
+        "answer_4": "function myFunction()",
+        "right_answer": 1,
+        "category": "JS"
+    },
+    {
+        "question": "How does a FOR loop start?",
+        "answer_1": "for (i = 0; i <= 5)",
+        "answer_2": "for (i <= 5; i++)",
+        "answer_3": "for i = 1 to 5",
+        "answer_4": "for (i = 0; i <= 5; i++)",
+        "right_answer": 4,
+        "category": "JS"
     }
 ];
 
+let ArrayOfCategory = 0;
+let category;
 let rightQuestions = 0;
 let currentQuestion = 0;
 let AUDIO_SUCCESS = new Audio('audio/sound_success.mp3');
 let AUDIO_FAIL = new Audio('audio/sound_fail.mp3');
 
 
-function init() {
-    document.getElementById('all-questions').innerHTML = questions.length;
+function init(category) {
+    highlightTheNavPoint(category);
+    showStartscreen(category);
+    resetAnswerButtons();
+    cleanToStart();
+}
+
+
+function cleanToStart(){
+    document.getElementById('startscreen').style = '';
+    document.getElementById('question-body').style = 'display: none;';
+    document.getElementById('endscreen').style = 'display: none;';
+    rightQuestions = 0;
+    currentQuestion = 0;
+}
+
+
+function highlightTheNavPoint(category) {
+    let removeClass = document.getElementsByClassName('nav-link');
+    for (let i = 0; i < removeClass.length; i++) {
+        removeClass[i].classList.remove('active');
+    }
+    document.getElementById(category).classList.toggle('active');
+}
+
+
+function showStartscreen(category) {
+    //Render Category
+    let categoryTag = document.getElementById('categoryTag');
+    categoryTag.innerHTML = category;
+    //Render Category Start-Btn
+    let startbtn = document.getElementById('start-btn');
+    startbtn.onclick = function () { startGame(category); };
+}
+
+
+
+function startGame(category) {
+    ArrayOfCategory = questions.filter(c => c.category == category);
+    document.getElementById('all-questions').innerHTML = ArrayOfCategory.length;
+    document.getElementById('startscreen').style = 'display: none;';
+    document.getElementById('question-body').style = '';
     showQuestion();
 }
 
 
 function showQuestion() {
 
-    if (currentQuestion >= questions.length) {
-        //Endscreen
-        document.getElementById('endscreen').style = '';
-        document.getElementById('question-body').style = 'display: none;';
-
-        document.getElementById('amount-of-questions').innerHTML = questions.length;
-        document.getElementById('amount-of-right-questions').innerHTML = rightQuestions;
+    if (gameisOver()) {
+        showEndscreen();
     } else {
-        //Current Question
-
-        //Calc Porgressbar
-        let percent = (currentQuestion + 1) / questions.length;
-        percent = Math.round(percent * 100);
-        document.getElementById('progress-bar').innerHTML = `${percent} %`;
-        document.getElementById('progress-bar').style = `width: ${percent}%;`;
-
-        //Show Question
-        let question = questions[currentQuestion];
-        document.getElementById('question-number').innerHTML = currentQuestion + 1;
-        document.getElementById('questiontext').innerHTML = question['question'];
-        document.getElementById('answer_1').innerHTML = question['answer_1'];
-        document.getElementById('answer_2').innerHTML = question['answer_2'];
-        document.getElementById('answer_3').innerHTML = question['answer_3'];
-        document.getElementById('answer_4').innerHTML = question['answer_4'];
+        updateProgressBar();
+        updateToNextQuestion();
     }
 }
 
 
+function gameisOver() {
+    //Callback-Function
+    return currentQuestion >= ArrayOfCategory.length;
+}
+
+
 function answer(selection) {
-    let question = questions[currentQuestion];
+    let question = ArrayOfCategory[currentQuestion];
     let selectedQuestionNumber = selection.slice(-1);
 
     let idOfRightAnswer = `answer_${question['right_answer']}`;
 
-    if (selectedQuestionNumber == question['right_answer']) {
+    if (rightAnswerSelected(selectedQuestionNumber)) {
         document.getElementById(selection).parentNode.classList.add('bg-success');
+        document.getElementById(selection).previousElementSibling.classList.add('bg-success');
+        document.getElementById(selection).previousElementSibling.classList.add('color-white');
         AUDIO_FAIL.pause(); // Zeit für AUDIO_FAIL zurücksetzen, damit AUDIO_SUCCESS direkt beginnen kann
         AUDIO_FAIL.currentTime = 0; // Zeit für AUDIO_FAIL auf 0 s zurücksetzen
         AUDIO_SUCCESS.play();
         rightQuestions++;
     } else {
         document.getElementById(selection).parentNode.classList.add('bg-danger');
+        document.getElementById(selection).previousElementSibling.classList.add('bg-danger');
+        document.getElementById(selection).previousElementSibling.classList.add('color-white');
         document.getElementById(idOfRightAnswer).parentNode.classList.add('bg-success');
+        document.getElementById(idOfRightAnswer).previousElementSibling.classList.add('bg-success');
+        document.getElementById(idOfRightAnswer).previousElementSibling.classList.add('color-white');
         AUDIO_SUCCESS.pause(); // Zeit für AUDIO_SUCCESS zurücksetzen, damit AUDIO_FAIL direkt beginnen kann
         AUDIO_SUCCESS.currentTime = 0; // Zeit für AUDIO_SUCCESS auf 0 s zurücksetzen
         AUDIO_FAIL.play();
     }
     document.getElementById('next-button').disabled = false;
+}
+
+
+function rightAnswerSelected(selectedQuestionNumber) {
+    let question = ArrayOfCategory[currentQuestion];
+    return selectedQuestionNumber == question['right_answer'];
 }
 
 
@@ -97,24 +204,65 @@ function nextQuestion() {
     showQuestion();
 }
 
-
-function resetAnswerButtons() {
-    document.getElementById('answer_1').parentNode.classList.remove('bg-danger');
-    document.getElementById('answer_1').parentNode.classList.remove('bg-success');
-    document.getElementById('answer_2').parentNode.classList.remove('bg-danger');
-    document.getElementById('answer_2').parentNode.classList.remove('bg-success');
-    document.getElementById('answer_3').parentNode.classList.remove('bg-danger');
-    document.getElementById('answer_3').parentNode.classList.remove('bg-success');
-    document.getElementById('answer_4').parentNode.classList.remove('bg-danger');
-    document.getElementById('answer_4').parentNode.classList.remove('bg-success');
+function prevQuestion() {
+    currentQuestion--;
+    document.getElementById('prev-button').disabled = true;
+    document.getElementById('next-button').disabled = true;
+    resetAnswerButtons();
+    showQuestion();
 }
 
 
-function replay(){
-    //Endscreen entfernen und question-body anzeigen
-    document.getElementById('question-body').style = '';
-    document.getElementById('endscreen').style = 'display: none;'; 
+function resetAnswerButtons() {
+    let removeClass = document.getElementsByClassName('answer-choice');
+    for (let i = 0; i < removeClass.length; i++) {
+        removeClass[i].parentNode.classList.remove('bg-danger');
+        removeClass[i].parentNode.classList.remove('bg-success');
+        removeClass[i].previousElementSibling.classList.remove('bg-danger');
+        removeClass[i].previousElementSibling.classList.remove('bg-success');
+        removeClass[i].previousElementSibling.classList.remove('color-white');
+    }
+}
+
+
+function replay(category) {
+    //Startscreen enable, Endscreen disable, question-body enable
+    document.getElementById('startscreen').style = '';
+    document.getElementById('question-body').style = 'display: none;';
+    document.getElementById('endscreen').style = 'display: none;';
     rightQuestions = 0;
     currentQuestion = 0;
-    init();
+    init(category);
+}
+
+
+function showEndscreen() {
+    document.getElementById('endscreen').style = '';
+    document.getElementById('question-body').style = 'display: none;';
+    let replaybtn = document.getElementById('replay');
+    let startbtn = document.getElementById('start-btn');
+    replaybtn.onclick = function () { replay(category); };
+
+    document.getElementById('amount-of-questions').innerHTML = ArrayOfCategory.length;
+    document.getElementById('amount-of-right-questions').innerHTML = rightQuestions;
+}
+
+
+function updateToNextQuestion() {
+    //Show Question
+    let question = questions[currentQuestion];
+    document.getElementById('question-number').innerHTML = currentQuestion + 1;
+    document.getElementById('questiontext').innerHTML = question['question'];
+    document.getElementById('answer_1').innerHTML = question['answer_1'];
+    document.getElementById('answer_2').innerHTML = question['answer_2'];
+    document.getElementById('answer_3').innerHTML = question['answer_3'];
+    document.getElementById('answer_4').innerHTML = question['answer_4'];
+}
+
+
+function updateProgressBar() {
+    let percent = (currentQuestion + 1) / ArrayOfCategory.length;
+    percent = Math.round(percent * 100);
+    document.getElementById('progress-bar').innerHTML = `${percent} %`;
+    document.getElementById('progress-bar').style = `width: ${percent}%;`;
 }
