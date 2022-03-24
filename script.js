@@ -172,12 +172,12 @@ function answer(selection) {
     let idOfRightAnswer = `answer_${question['right_answer']}`;
 
     if (rightAnswerSelected(selectedQuestionNumber)) {
-        addClasslistForRightAnswer();
+        addClasslistForRightAnswer(selection);
         resetAudio();
         AUDIO_SUCCESS.play();
         rightQuestions++;
     } else {
-        addClasslistForWrongAnswer();
+        addClasslistForWrongAnswer(selection, idOfRightAnswer);
         resetAudio();
         AUDIO_FAIL.play();
     }
@@ -185,14 +185,14 @@ function answer(selection) {
 }
 
 
-function addClasslistForRightAnswer() {
+function addClasslistForRightAnswer(selection) {
     document.getElementById(selection).parentNode.classList.add('bg-success');
     document.getElementById(selection).previousElementSibling.classList.add('bg-success');
     document.getElementById(selection).previousElementSibling.classList.add('color-white');
 }
 
 
-function addClasslistForWrongAnswer() {
+function addClasslistForWrongAnswer(selection, idOfRightAnswer) {
     document.getElementById(selection).parentNode.classList.add('bg-danger');
     document.getElementById(selection).previousElementSibling.classList.add('bg-danger');
     document.getElementById(selection).previousElementSibling.classList.add('color-white');
