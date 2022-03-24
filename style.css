@@ -34,8 +34,9 @@ body {
 .img-trophy {
     position: absolute;
     right: 0;
+    bottom: 125px;
     object-fit: contain;
-    height: 150px;
+    height: 250px;
 }
 
 .img-brain {
@@ -251,9 +252,8 @@ a {
         min-width: 50px;
     }
     
-
     .img-trophy {
-        bottom: 70px;
+        display: none;
     }
 
     .card {
