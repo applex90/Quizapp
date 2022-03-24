@@ -92,7 +92,7 @@ let questions = [
 ];
 
 let ArrayOfCategory = 0;
-let category;
+let topic = '';
 let rightQuestions = 0;
 let currentQuestion = 0;
 let AUDIO_SUCCESS = new Audio('audio/sound_success.mp3');
@@ -100,14 +100,15 @@ let AUDIO_FAIL = new Audio('audio/sound_fail.mp3');
 
 
 function init(category) {
-    highlightTheNavPoint(category);
-    showStartscreen(category);
+    topic = category;
+    highlightTheNavPoint(topic);
+    showStartscreen(topic);
     resetAnswerButtons();
     cleanToStart();
 }
 
 
-function cleanToStart(){
+function cleanToStart() {
     document.getElementById('startscreen').style = '';
     document.getElementById('question-body').style = 'display: none;';
     document.getElementById('endscreen').style = 'display: none;';
@@ -116,28 +117,29 @@ function cleanToStart(){
 }
 
 
-function highlightTheNavPoint(category) {
+function highlightTheNavPoint(topic) {
     let removeClass = document.getElementsByClassName('nav-link');
     for (let i = 0; i < removeClass.length; i++) {
         removeClass[i].classList.remove('active');
     }
-    document.getElementById(category).classList.toggle('active');
+    document.getElementById(topic).classList.toggle('active');
 }
 
 
-function showStartscreen(category) {
+function showStartscreen(topic) {
     //Render Category
     let categoryTag = document.getElementById('categoryTag');
-    categoryTag.innerHTML = category;
+    categoryTag.innerHTML = topic;
     //Render Category Start-Btn
     let startbtn = document.getElementById('start-btn');
-    startbtn.onclick = function () { startGame(category); };
+    startbtn.onclick = function () { startGame(topic); };
 }
 
 
 
 function startGame(category) {
-    ArrayOfCategory = questions.filter(c => c.category == category);
+    topic = category;
+    ArrayOfCategory = questions.filter(c => c.category == topic);
     document.getElementById('all-questions').innerHTML = ArrayOfCategory.length;
     document.getElementById('startscreen').style = 'display: none;';
     document.getElementById('question-body').style = '';
@@ -148,6 +150,7 @@ function startGame(category) {
 function showQuestion() {
 
     if (gameisOver()) {
+        updateProgressBar();
         showEndscreen();
     } else {
         updateProgressBar();
@@ -172,8 +175,7 @@ function answer(selection) {
         document.getElementById(selection).parentNode.classList.add('bg-success');
         document.getElementById(selection).previousElementSibling.classList.add('bg-success');
         document.getElementById(selection).previousElementSibling.classList.add('color-white');
-        AUDIO_FAIL.pause(); // Zeit für AUDIO_FAIL zurücksetzen, damit AUDIO_SUCCESS direkt beginnen kann
-        AUDIO_FAIL.currentTime = 0; // Zeit für AUDIO_FAIL auf 0 s zurücksetzen
+        resetAudio();
         AUDIO_SUCCESS.play();
         rightQuestions++;
     } else {
@@ -183,11 +185,18 @@ function answer(selection) {
         document.getElementById(idOfRightAnswer).parentNode.classList.add('bg-success');
         document.getElementById(idOfRightAnswer).previousElementSibling.classList.add('bg-success');
         document.getElementById(idOfRightAnswer).previousElementSibling.classList.add('color-white');
-        AUDIO_SUCCESS.pause(); // Zeit für AUDIO_SUCCESS zurücksetzen, damit AUDIO_FAIL direkt beginnen kann
-        AUDIO_SUCCESS.currentTime = 0; // Zeit für AUDIO_SUCCESS auf 0 s zurücksetzen
+        resetAudio();
         AUDIO_FAIL.play();
     }
     document.getElementById('next-button').disabled = false;
+}
+
+
+function resetAudio() {
+    AUDIO_FAIL.pause(); // Zeit für AUDIO_FAIL zurücksetzen, damit AUDIO_SUCCESS direkt beginnen kann
+    AUDIO_FAIL.currentTime = 0; // Zeit für AUDIO_FAIL auf 0 s zurücksetzen
+    AUDIO_SUCCESS.pause(); // Zeit für AUDIO_SUCCESS zurücksetzen, damit AUDIO_FAIL direkt beginnen kann
+    AUDIO_SUCCESS.currentTime = 0; // Zeit für AUDIO_SUCCESS auf 0 s zurücksetzen
 }
 
 
@@ -199,17 +208,25 @@ function rightAnswerSelected(selectedQuestionNumber) {
 
 function nextQuestion() {
     currentQuestion++;
+    document.getElementById('prev-button').disabled = false;
     document.getElementById('next-button').disabled = true;
     resetAnswerButtons();
     showQuestion();
+
 }
 
+
 function prevQuestion() {
-    currentQuestion--;
-    document.getElementById('prev-button').disabled = true;
-    document.getElementById('next-button').disabled = true;
-    resetAnswerButtons();
-    showQuestion();
+    if (currentQuestion > 0) {
+        currentQuestion--;
+        if (rightQuestions > 0) {
+            rightQuestions--;
+        }
+        document.getElementById('prev-button').disabled = false;
+        document.getElementById('next-button').disabled = true;
+        resetAnswerButtons();
+        showQuestion();
+    }
 }
 
 
@@ -226,31 +243,41 @@ function resetAnswerButtons() {
 
 
 function replay(category) {
+    resetProgressbar();
     //Startscreen enable, Endscreen disable, question-body enable
     document.getElementById('startscreen').style = '';
     document.getElementById('question-body').style = 'display: none;';
     document.getElementById('endscreen').style = 'display: none;';
     rightQuestions = 0;
     currentQuestion = 0;
-    init(category);
+    init(topic);
+}
+
+
+function resetProgressbar() {
+    document.getElementById('progress-bar').innerHTML = `0 %`;
+    document.getElementById('progress-bar').style = `width: 0%;`;
 }
 
 
 function showEndscreen() {
     document.getElementById('endscreen').style = '';
     document.getElementById('question-body').style = 'display: none;';
+    //Render Category
+    let categoryTag = document.getElementById('EndcategoryTag');
+    categoryTag.innerHTML = topic;
     let replaybtn = document.getElementById('replay');
     let startbtn = document.getElementById('start-btn');
-    replaybtn.onclick = function () { replay(category); };
+    replaybtn.onclick = function () { replay(topic); };
 
     document.getElementById('amount-of-questions').innerHTML = ArrayOfCategory.length;
-    document.getElementById('amount-of-right-questions').innerHTML = rightQuestions;
+    document.getElementById('amount-of-right-questions').innerHTML = `${rightQuestions}/`;
 }
 
 
 function updateToNextQuestion() {
     //Show Question
-    let question = questions[currentQuestion];
+    let question = ArrayOfCategory[currentQuestion];
     document.getElementById('question-number').innerHTML = currentQuestion + 1;
     document.getElementById('questiontext').innerHTML = question['question'];
     document.getElementById('answer_1').innerHTML = question['answer_1'];
@@ -261,7 +288,7 @@ function updateToNextQuestion() {
 
 
 function updateProgressBar() {
-    let percent = (currentQuestion + 1) / ArrayOfCategory.length;
+    let percent = (currentQuestion) / ArrayOfCategory.length;
     percent = Math.round(percent * 100);
     document.getElementById('progress-bar').innerHTML = `${percent} %`;
     document.getElementById('progress-bar').style = `width: ${percent}%;`;

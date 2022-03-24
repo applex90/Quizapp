@@ -1,7 +1,7 @@
 body {
     background-color: rgb(254, 250, 239) !important;
     font-family: 'Rubik', sans-serif !important;
-    font-size: 18px !important;
+    font-size: 20px !important;
 }
 
 .pt-sans-bold {
@@ -13,14 +13,19 @@ body {
 .pt-sans-regular {
     font-family: 'PT Sans', sans-serif;
     font-weight: 400;
-    font-size: 18px;
+    font-size: 24px;
+}
+
+.rubik-bold {
+    font-family: 'Rubik', sans-serif;
+    font-weight: bold;
+    font-size: 24px;
 }
 
 .bg-brain {
     background-image: url('img/brainbg.jpg');
-    background-size: contain;
-    height: 450px;
-    width: 550px;
+    background-size: cover;
+    background-position: center;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -30,18 +35,22 @@ body {
     position: absolute;
     right: 0;
     object-fit: contain;
-    height: 70px;
+    height: 150px;
 }
 
 .img-brain {
     object-fit: contain;
     height: 70px;
     width: 70px;
+    margin-bottom: 16px;
 }
 
-.endscreen{
+.endscreen {
     height: 450px;
     width: 550px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .btn-right {
@@ -53,6 +62,16 @@ body {
 .btn-primary {
     background-color: rgb(255, 77, 14) !important;
     border-color: unset !important;
+}
+
+.margin-top {
+    margin-top: 16px;
+}
+
+.btn-secondary {
+    background-color: #0D6EFD !important;
+    border-color: unset !important;
+    margin-top: 16px;
 }
 
 .main-container {
@@ -71,8 +90,8 @@ body {
 
 .logo {
     object-fit: contain;
-    height: 54px;
-    width: 54px;
+    height: 60px;
+    width: 60px;
     margin: 14px;
 }
 
@@ -110,6 +129,8 @@ a {
 .card {
     flex-direction: row !important;
     border: unset;
+    width: 700px;
+    height: 500px;
 }
 
 .question-footer {
@@ -120,7 +141,7 @@ a {
     padding-top: 24px;
 }
 
-.quiz-answer{
+.quiz-answer {
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -132,7 +153,7 @@ a {
     transform: scale(1.02);
 }
 
-.letter{
+.letter {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -140,6 +161,10 @@ a {
     max-height: 26px;
     background-color: lightgray;
     margin: 12px;
+}
+
+.score {
+    color: #EC8C40;
 }
 
 .bg-success, .bg-danger {
@@ -182,4 +207,123 @@ a {
     display: flex;
     justify-content: center;
     margin-top: 16px;
+}
+
+@media(max-width: 768px) {
+
+    body {
+        font-size: 18px !important;
+    }
+
+    .pt-sans-bold {
+        font-family: 'PT Sans', sans-serif;
+        font-weight: bold;
+        font-size: 24px;
+    }
+
+    .pt-sans-regular {
+        font-family: 'PT Sans', sans-serif;
+        font-weight: 400;
+        font-size: 24px;
+    }
+
+    .rubik-bold {
+        font-family: 'Rubik', sans-serif;
+        font-weight: bold;
+        font-size: 20px;
+    }
+
+    .logo {
+        margin-right: 48px;
+    }
+
+    .quiz-answer {
+        min-height: 80px !important;
+        max-height: 100px;
+    }
+
+    .btn-right {
+        position: unset;
+    }
+
+    .btn-grey {
+        min-height: 50px;
+        min-width: 50px;
+    }
+    
+
+    .img-trophy {
+        bottom: 70px;
+    }
+
+    .card {
+        flex-direction: column !important;
+        border-radius: 0 !important;
+    }
+
+    .quiz-card {
+        min-width: 100vw !important;
+        min-height: 95vh;
+    }
+
+    .bg-brain {
+        width: 100%;
+    }
+
+    .nav-container {
+        flex-direction: row;
+        border-radius: 0 !important;
+    }
+
+    #flex-responsive {
+        flex-direction: row !important;
+    }
+
+    .active {
+        border-bottom: 7px solid white;
+        border-left: 0;
+    }
+
+    a {
+        border-bottom: 7px solid rgb(39, 53, 92);
+        border-left: 0;
+    }
+
+    .responsive-row {
+        display: flex !important;
+        flex-direction: row !important;
+    }
+
+    .endscreen {
+        height: 100%;
+        width: 100%;
+    }
+
+    .h5, h5 {
+        font-size: 1.1rem !important;
+    }
+}
+
+@media(max-width: 720px) {
+    body {
+        font-size: 16px !important;
+    }
+
+    .pt-sans-bold {
+        font-family: 'PT Sans', sans-serif;
+        font-weight: bold;
+        font-size: 20px;
+    }
+
+    .pt-sans-regular {
+        font-family: 'PT Sans', sans-serif;
+        font-weight: 400;
+        font-size: 20px;
+    }
+
+    .rubik-bold {
+        font-family: 'Rubik', sans-serif;
+        font-weight: bold;
+        font-size: 18px;
+    }
 }

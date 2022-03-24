@@ -44,7 +44,7 @@
             <div class="card quiz-card">
                 <div class="nav-container">
                     <img class="logo" src="img/logo.png">
-                    <ul class="nav flex-column">
+                    <ul class="nav flex-column" id="flex-responsive">
 
                         <li class="nav-item">
                             <a class="nav-link active" id="HTML" aria-current="page" onclick="init('HTML')">HTML</a>
@@ -71,43 +71,46 @@
 
 
                 <div class="card-body endscreen" id="endscreen" style="display: none;">
-                    <div class="text-center">COMPLETE xxx QUIZ
+                    <div class="text-center"><img class="img-brain" src="img/brain result.png" class="width-100">
                     </div>
-                    <div><img class="img-brain" src="img/brain result.png" class="width-100">
+                    <div class="text-center"><span class="rubik-bold">COMPLETE<br><span id="EndcategoryTag"></span>
+                            QUIZ</span><br>
                     </div>
                     <div><img class="img-trophy" src="img/tropy.png">
                     </div>
-                    <div class="text-center">YOUR SCORE <b id="amount-of-right-questions">X</b>/<b
-                            id="amount-of-questions">X</b>
+                    <div class="text-center margin-top"><span class="score rubik-bold">YOUR SCORE</span>
+                        <b id="amount-of-right-questions" class="rubik-bold"> X</b><b id="amount-of-questions"
+                            class="rubik-bold">X</b>
                     </div>
-                    <div class="button-row"><button class="btn btn-primary" id="replay" onclick="replay('HTML')">REPLAY</button></div>
+                    <div class="button-row"><button class="btn btn-secondary" id="replay"
+                            onclick="replay('HTML')">REPLAY</button></div>
                 </div>
 
                 <div class="card-body bg-brain" id="question-body" style="display: none;">
                     <h5 class="card-title text-center" id="questiontext">Frage</h5>
 
-                    <div class="card mb-2 quiz-answer" onclick="answer('answer_1')">
+                    <div class="card mb-2 quiz-answer width-100 responsive-row" onclick="answer('answer_1')">
                         <div class="card-body letter">A</div>
                         <div class="card-body answer-choice" id="answer_1">
                             Antwort
                         </div>
                     </div>
 
-                    <div class="card mb-2 quiz-answer" onclick="answer('answer_2')">
+                    <div class="card mb-2 quiz-answer width-100 responsive-row" onclick="answer('answer_2')">
                         <div class="card-body letter">B</div>
                         <div class="card-body answer-choice" id="answer_2">
                             Antwort
                         </div>
                     </div>
 
-                    <div class="card mb-2 quiz-answer" onclick="answer('answer_3')">
+                    <div class="card mb-2 quiz-answer width-100 responsive-row" onclick="answer('answer_3')">
                         <div class="card-body letter">C</div>
                         <div class="card-body answer-choice" id="answer_3">
                             Antwort
                         </div>
                     </div>
 
-                    <div class="card mb-3 quiz-answer" onclick="answer('answer_4')">
+                    <div class="card mb-3 quiz-answer width-100 responsive-row" onclick="answer('answer_4')">
                         <div class="card-body letter">D</div>
                         <div class="card-body answer-choice" id="answer_4">
                             Antwort
@@ -118,8 +121,10 @@
                         <span>
                             <b id="question-number">1</b> von <b id="all-questions">5</b> Fragen
                         </span>
-                        <button onclick="prevQuestion()" id="prev-button" class="btn-grey"><i class="fa-solid fa-angle-left"></i></button>
-                        <button onclick="nextQuestion()" id="next-button" class="btn-grey" disabled><i class="fa-solid fa-angle-right"></i></button>
+                        <button onclick="prevQuestion()" id="prev-button" class="btn-grey" disabled><i
+                                class="fa-solid fa-angle-left"></i></button>
+                        <button onclick="nextQuestion()" id="next-button" class="btn-grey" disabled><i
+                                class="fa-solid fa-angle-right"></i></button>
                     </div>
 
                 </div>
